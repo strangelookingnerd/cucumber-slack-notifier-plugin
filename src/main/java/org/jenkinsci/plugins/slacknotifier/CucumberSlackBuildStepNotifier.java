@@ -3,27 +3,27 @@ package org.jenkinsci.plugins.slacknotifier;
 import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.BuildListener;
-import hudson.model.Result;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
-import hudson.model.Run;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.FormValidation;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 
 import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 
-import org.json.JSONArray;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 public class CucumberSlackBuildStepNotifier extends Builder {
+
+	private static final Logger LOG = Logger.getLogger(CucumberSlackBuildStepNotifier.class.getName());
 
 	private final String channel;
 
@@ -38,42 +38,18 @@ public class CucumberSlackBuildStepNotifier extends Builder {
 
 	@Override
 	public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
-
-		String endpoint = ((CucumberSlackBuildStepNotifier.DescriptorImpl) Jenkins.getInstance().getDescriptor(
+		String webhookUrl = ((CucumberSlackBuildStepNotifier.DescriptorImpl) Jenkins.getInstance().getDescriptor(
 				CucumberSlackBuildStepNotifier.class)).getWebHookEndpoint();
-		String jenkinsServer = ((CucumberSlackBuildStepNotifier.DescriptorImpl) Jenkins.getInstance().getDescriptor(
+		String jenkinsUrl = ((CucumberSlackBuildStepNotifier.DescriptorImpl) Jenkins.getInstance().getDescriptor(
 				CucumberSlackBuildStepNotifier.class)).getJenkinsServerUrl();
 
-		org.json.JSONObject json = new org.json.JSONObject();
-		json.put("channel", channel);
-		json.put("username", "Jenkins");
-		String summary = build.getProject().getFullDisplayName() + " - " + build.getDisplayName() + " build "
-				+ getStatusMessage(build).toLowerCase();
-		json.put("text", summary); // "Config Management v.1.1.7 b 1209 success after 54 sec");
-		json.put("icon_url",
-				"https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png?version=1&modificationDate=1302753947000");
-		json.put("link_names", 1);
+		LOG.info("Posting cucumber reports to slack for '" + build.getParent().getDisplayName() + "'");
 
-		JSONArray mrkdown_in = new JSONArray();
-		mrkdown_in.put("text");
+		SlackClient client = new SlackClient(webhookUrl, jenkinsUrl, channel);
+		client.postToSlack(null, build.getParent().getDisplayName(), build.getNumber());
 
-		org.json.JSONObject jenkins = new org.json.JSONObject();
-		jenkins.put("fallback", "not printable");
-		jenkins.put("color", "#c2c2d6");
-		jenkins.put("title", "Jenkins ");
-		jenkins.put("title_link", jenkinsServer + build.getUrl());
-		// jenkins.put("text", this.escape(message));
-		jenkins.put("mrkdwn_in", mrkdown_in);
-
-		JSONArray attachments = new JSONArray();
-		attachments.put(jenkins);
-
-		json.put("attachments", attachments);
-
-		// new SlackPoster(endpoint).publish(json);
 		listener.getLogger().printf("message posted to slack");
 		return true;
-
 	}
 
 	public String escape(String string) {
@@ -82,34 +58,6 @@ public class CucumberSlackBuildStepNotifier extends Builder {
 		string = string.replace(">", "&gt;");
 
 		return string;
-	}
-
-	static String getStatusMessage(AbstractBuild r) {
-		if (r.isBuilding()) {
-			return "Starting...";
-		}
-		Result result = r.getResult();
-		Run previousBuild = r.getProject().getLastBuild().getPreviousBuild();
-		Result previousResult = (previousBuild != null) ? previousBuild.getResult() : Result.SUCCESS;
-		if (result == Result.SUCCESS && previousResult == Result.FAILURE) {
-			return "Back to normal";
-		}
-		if (result == Result.SUCCESS) {
-			return "Success";
-		}
-		if (result == Result.FAILURE) {
-			return "Failure";
-		}
-		if (result == Result.ABORTED) {
-			return "Aborted";
-		}
-		if (result == Result.NOT_BUILT) {
-			return "Not built";
-		}
-		if (result == Result.UNSTABLE) {
-			return "Unstable";
-		}
-		return "Unknown";
 	}
 
 	// Overridden for better type safety.
