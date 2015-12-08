@@ -3,4 +3,7 @@
   <f:entry title="Channel" field="channel" description="Which slack channel to post to ...">
     <f:textbox />
   </f:entry>
+  <f:entry title="JSON Result File" field="json" description="Location of the JSON result file for Cucumber">
+    <f:textbox />
+  </f:entry>
 </j:jelly>
