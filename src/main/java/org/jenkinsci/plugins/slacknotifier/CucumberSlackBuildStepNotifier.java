@@ -1,19 +1,17 @@
 package org.jenkinsci.plugins.slacknotifier;
 
 import hudson.Extension;
+import hudson.FilePath;
 import hudson.Launcher;
 import hudson.model.BuildListener;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
-import hudson.model.Job;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.FormValidation;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -21,7 +19,7 @@ import javax.servlet.ServletException;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
@@ -58,10 +56,17 @@ public class CucumberSlackBuildStepNotifier extends Builder {
 		String jenkinsUrl = ((CucumberSlackBuildStepNotifier.DescriptorImpl) Jenkins.getInstance().getDescriptor(
 				CucumberSlackBuildStepNotifier.class)).getJenkinsServerUrl();
 
-		LOG.info("Posting cucumber reports to slack for '" + build.getParent().getDisplayName() + "'");
-		LOG.info("Cucumber reports are in '" + build.getParent().getRootDir() + "'");
+		if (StringUtils.isNotEmpty(webhookUrl)) {
+			LOG.fine("Skipping cucumber slack notifier...");
+			return true;
+		}
 
-		JsonElement jsonElement = getResultFileAsJsonElement(build.getParent());
+		LOG.info("Posting cucumber reports to slack for '" + build.getParent().getDisplayName() + "'");
+		LOG.info("Cucumber reports are in '" + build.getWorkspace() + "'");
+
+		FilePath workspace = build.getWorkspace();
+
+		JsonElement jsonElement = getResultFileAsJsonElement(workspace);
 		SlackClient client = new SlackClient(webhookUrl, jenkinsUrl, channel);
 		client.postToSlack(jsonElement, build.getParent().getDisplayName(), build.getNumber());
 
@@ -76,17 +81,14 @@ public class CucumberSlackBuildStepNotifier extends Builder {
 		return string;
 	}
 
-	private JsonElement getResultFileAsJsonElement(Job job) {
-		final File targetDirectory = new File(job.getRootDir(), "target");
-		final File file = new File(targetDirectory, json);
-		LOG.info("Publishing results file: " + file.getName());
-		final String filePath = file.getAbsolutePath();
-		LOG.info("file path: " + filePath);
+	private JsonElement getResultFileAsJsonElement(FilePath workspace) {
+		final FilePath jsonPath = new FilePath(workspace, json);
+		LOG.info("file path: " + jsonPath);
 		final Gson gson = new Gson();
 		try {
-			final JsonReader jsonReader = new JsonReader(new FileReader(file));
+			final JsonReader jsonReader = new JsonReader(new InputStreamReader(jsonPath.read()));
 			return gson.fromJson(jsonReader, JsonElement.class);
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			throw new RuntimeException("Exception occurred while reading test results", e);
 		}
 	}
