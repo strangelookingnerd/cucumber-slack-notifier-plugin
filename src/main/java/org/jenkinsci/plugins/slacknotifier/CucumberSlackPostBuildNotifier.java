@@ -6,7 +6,9 @@ import hudson.model.BuildListener;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.tasks.BuildStepDescriptor;
-import hudson.tasks.Builder;
+import hudson.tasks.BuildStepMonitor;
+import hudson.tasks.Publisher;
+import hudson.tasks.Recorder;
 import hudson.util.FormValidation;
 
 import java.io.IOException;
@@ -22,15 +24,15 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
-public class CucumberSlackBuildStepNotifier extends Builder {
+public class CucumberSlackPostBuildNotifier extends Recorder {
 
-	private static final Logger LOG = Logger.getLogger(CucumberSlackBuildStepNotifier.class.getName());
+	private static final Logger LOG = Logger.getLogger(CucumberSlackPostBuildNotifier.class.getName());
 
 	private final String channel;
 	private final String json;
 
 	@DataBoundConstructor
-	public CucumberSlackBuildStepNotifier(String channel, String json) {
+	public CucumberSlackPostBuildNotifier(String channel, String json) {
 		this.channel = channel;
 		this.json = json;
 	}
@@ -44,7 +46,8 @@ public class CucumberSlackBuildStepNotifier extends Builder {
 	}
 
 	@Override
-	public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
+	public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
+			throws InterruptedException, IOException {
 		String webhookUrl = CucumberSlack.get().getWebHookEndpoint();
 		String jenkinsUrl = CucumberSlack.get().getJenkinsServerUrl();
 
@@ -65,7 +68,7 @@ public class CucumberSlackBuildStepNotifier extends Builder {
 	}
 
 	@Extension
-	public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
+	public static final class DescriptorImpl extends BuildStepDescriptor<Publisher> {
 
 		private String webHookEndpoint;
 		private String jenkinsServerUrl;
@@ -105,5 +108,9 @@ public class CucumberSlackBuildStepNotifier extends Builder {
 		public String getJenkinsServerUrl() {
 			return jenkinsServerUrl;
 		}
+	}
+
+	public BuildStepMonitor getRequiredMonitorService() {
+		return BuildStepMonitor.STEP;
 	}
 }

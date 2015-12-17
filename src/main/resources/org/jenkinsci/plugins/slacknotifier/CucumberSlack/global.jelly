@@ -1,6 +1,6 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
-  <f:section title="Cucumber Report Slack Build Step Notifier">
+  <f:section title="Cucumber Report Slack Notifier">
     <f:entry title="Web Hook Endpoint" field="webHookEndpoint"
       description="This is the url of the webhook endpoint on slack">
       <f:textbox />
