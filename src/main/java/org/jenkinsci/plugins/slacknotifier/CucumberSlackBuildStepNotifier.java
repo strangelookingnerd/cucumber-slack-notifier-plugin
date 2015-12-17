@@ -56,7 +56,7 @@ public class CucumberSlackBuildStepNotifier extends Builder {
 		String jenkinsUrl = ((CucumberSlackBuildStepNotifier.DescriptorImpl) Jenkins.getInstance().getDescriptor(
 				CucumberSlackBuildStepNotifier.class)).getJenkinsServerUrl();
 
-		if (StringUtils.isNotEmpty(webhookUrl)) {
+		if (StringUtils.isEmpty(webhookUrl)) {
 			LOG.fine("Skipping cucumber slack notifier...");
 			return true;
 		}
