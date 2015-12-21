@@ -142,7 +142,7 @@ public class SlackClient {
 		fields.add(shortTitle("Pass %"));
 		for (Map.Entry<String, String> feature : features.entrySet()) {
 			final String featureFileName = feature.getKey();
-			String featureName = featureFileName.replace(".feature", "");
+			String featureName = featureFileName.replace("-feature", "");
 			featureName = featureName.replaceAll("_", " ");
 			fields.add(shortObject("<" + hyperLink + featureFileName + ".html|" + featureName + ">"));
 			fields.add(shortObject(feature.getValue() + " %"));
