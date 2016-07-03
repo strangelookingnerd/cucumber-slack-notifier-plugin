@@ -14,7 +14,6 @@ The following options are available:
 ### Global Configuration
 
 * webHookEndpoint
-* jenkinsServerUrl
 
 TODO: add a screen shot here 
 
