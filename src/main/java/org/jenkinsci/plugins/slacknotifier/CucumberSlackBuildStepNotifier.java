@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 
-import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;

@@ -1,0 +1,490 @@
+[
+  {
+    "id": "validate-confluence-home-page",
+    "description": "",
+    "name": "Validate Confluence Home Page",
+    "keyword": "Feature",
+    "line": 1,
+    "elements": [
+      {
+        "id": "validate-confluence-home-page;validate-confluence-home-page",
+        "before": [
+          {
+            "result": {
+              "duration": 1836508,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HtmlReportLogger.before(Scenario)"
+            }
+          }
+        ],
+        "description": "",
+        "name": "Validate Confluence Home Page",
+        "keyword": "Scenario",
+        "line": 3,
+        "steps": [
+          {
+            "result": {
+              "duration": 4890319971,
+              "status": "passed"
+            },
+            "name": "the Confluence Home page is requested to load",
+            "keyword": "When ",
+            "line": 4,
+            "match": {
+              "location": "ValidateConfluenceHomePageSteps.theConfluenceHomePageIsRequestedToLoad()"
+            }
+          },
+          {
+            "result": {
+              "duration": 3503941,
+              "status": "passed"
+            },
+            "name": "the Confluence home page should appear",
+            "keyword": "Then ",
+            "line": 5,
+            "match": {
+              "location": "ValidateConfluenceHomePageSteps.theConfluenceHomePageShouldAppear()"
+            }
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "uri": "validate_confluence_home_page.feature"
+  },
+  {
+    "id": "validate-gerrit-home-page",
+    "description": "",
+    "name": "Validate Gerrit Home Page",
+    "keyword": "Feature",
+    "line": 1,
+    "elements": [
+      {
+        "id": "validate-gerrit-home-page;validate-gerrit-home-page",
+        "before": [
+          {
+            "result": {
+              "duration": 270044,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HtmlReportLogger.before(Scenario)"
+            }
+          }
+        ],
+        "description": "",
+        "name": "Validate Gerrit Home Page",
+        "keyword": "Scenario",
+        "line": 3,
+        "steps": [
+          {
+            "result": {
+              "duration": 5881380200,
+              "status": "passed"
+            },
+            "name": "the Gerrit home page is requested to load",
+            "keyword": "When ",
+            "line": 4,
+            "match": {
+              "location": "ValidateGerritHomePageSteps.theGerritHomePageIsRequestedToLoad()"
+            }
+          },
+          {
+            "result": {
+              "duration": 235748,
+              "status": "passed"
+            },
+            "name": "the Gerrit home page should appear",
+            "keyword": "Then ",
+            "line": 5,
+            "match": {
+              "location": "ValidateGerritHomePageSteps.theGerritHomePageShouldAppear()"
+            }
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "uri": "validate_gerrit_home_page.feature"
+  },
+  {
+    "id": "validate-jenkins-home-page",
+    "description": "",
+    "name": "Validate Jenkins Home Page",
+    "keyword": "Feature",
+    "line": 1,
+    "elements": [
+      {
+        "id": "validate-jenkins-home-page;validate-jenkins-home-page",
+        "before": [
+          {
+            "result": {
+              "duration": 274943,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HtmlReportLogger.before(Scenario)"
+            }
+          }
+        ],
+        "description": "",
+        "name": "Validate Jenkins Home Page",
+        "keyword": "Scenario",
+        "line": 3,
+        "steps": [
+          {
+            "result": {
+              "duration": 1135929914,
+              "status": "passed"
+            },
+            "name": "the Jenkins Home page is requested to load",
+            "keyword": "When ",
+            "line": 4,
+            "match": {
+              "location": "ValidateJenkinsHomePageSteps.theJenkinsHomepageIsRequestedToLoad()"
+            }
+          },
+          {
+            "result": {
+              "duration": 42284,
+              "status": "passed"
+            },
+            "name": "the jenkins home page should appear",
+            "keyword": "Then ",
+            "line": 5,
+            "match": {
+              "location": "ValidateJenkinsHomePageSteps.theJenkinsHomePageShouldAppear()"
+            }
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "uri": "validate_jenkins_home_page.feature"
+  },
+  {
+    "id": "validate-jira-home-page",
+    "description": "",
+    "name": "Validate Jira Home Page",
+    "keyword": "Feature",
+    "line": 1,
+    "elements": [
+      {
+        "id": "validate-jira-home-page;validate-jira-home-page",
+        "before": [
+          {
+            "result": {
+              "duration": 260416,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HtmlReportLogger.before(Scenario)"
+            }
+          }
+        ],
+        "description": "",
+        "name": "Validate Jira Home Page",
+        "keyword": "Scenario",
+        "line": 3,
+        "steps": [
+          {
+            "result": {
+              "duration": 3464468498,
+              "status": "passed"
+            },
+            "name": "the Jira Home page is requested to load",
+            "keyword": "When ",
+            "line": 4,
+            "match": {
+              "location": "ValidateJiraHomePageSteps.theJiraHomepageIsRequestedToLoad()"
+            }
+          },
+          {
+            "result": {
+              "duration": 144290,
+              "status": "passed"
+            },
+            "name": "the Jira home page should appear",
+            "keyword": "Then ",
+            "line": 5,
+            "match": {
+              "location": "ValidateJiraHomePageSteps.theJiraHomePageShouldAppear()"
+            }
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "uri": "validate_jira_home_page.feature"
+  },
+  {
+    "id": "validate-login-page",
+    "description": "",
+    "name": "Validate Login Page",
+    "keyword": "Feature",
+    "line": 1,
+    "elements": [
+      {
+        "id": "validate-login-page;validate-login-page",
+        "before": [
+          {
+            "result": {
+              "duration": 278517,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HtmlReportLogger.before(Scenario)"
+            }
+          }
+        ],
+        "description": "",
+        "name": "Validate Login Page",
+        "keyword": "Scenario",
+        "line": 3,
+        "steps": [
+          {
+            "result": {
+              "duration": 2084265789,
+              "status": "passed"
+            },
+            "name": "a \u0027Login\u0027 page is requested to load",
+            "keyword": "When ",
+            "line": 4,
+            "match": {
+              "location": "ValidateLoginPageSteps.whenALoginPageIsRequestedToLoad()"
+            }
+          },
+          {
+            "result": {
+              "duration": 960879069,
+              "status": "passed"
+            },
+            "name": "a panel with title \u0027Please Sign In\u0027 should appear",
+            "keyword": "Then ",
+            "line": 5,
+            "match": {
+              "arguments": [
+                {
+                  "val": "Please Sign In",
+                  "offset": 20
+                }
+              ],
+              "location": "ValidateLoginPageSteps.thenAPanelWithTitleShouldAppear(String)"
+            }
+          },
+          {
+            "result": {
+              "duration": 110061742,
+              "status": "passed"
+            },
+            "name": "a \u0027Login\u0027 button should appear",
+            "keyword": "And ",
+            "line": 6,
+            "match": {
+              "arguments": [
+                {
+                  "val": "Login",
+                  "offset": 3
+                }
+              ],
+              "location": "ValidateLoginPageSteps.thenAButtonShouldAppear(String)"
+            }
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "uri": "validate_login_page.feature"
+  },
+  {
+    "id": "validate-nexus-home-page",
+    "description": "",
+    "name": "Validate Nexus Home Page",
+    "keyword": "Feature",
+    "line": 1,
+    "elements": [
+      {
+        "id": "validate-nexus-home-page;validate-nexus-home-page",
+        "before": [
+          {
+            "result": {
+              "duration": 364639,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HtmlReportLogger.before(Scenario)"
+            }
+          }
+        ],
+        "description": "",
+        "name": "Validate Nexus Home Page",
+        "keyword": "Scenario",
+        "line": 3,
+        "steps": [
+          {
+            "result": {
+              "duration": 219664072,
+              "status": "passed"
+            },
+            "name": "the Nexus home page is requested to load",
+            "keyword": "When ",
+            "line": 4,
+            "match": {
+              "location": "ValidateNexusHomePageSteps.the_Nexus_home_page_is_requested_to_load()"
+            }
+          },
+          {
+            "result": {
+              "duration": 274539,
+              "status": "passed"
+            },
+            "name": "the Nexus home page should appear",
+            "keyword": "Then ",
+            "line": 5,
+            "match": {
+              "location": "ValidateNexusHomePageSteps.the_Nexus_home_page_should_appear()"
+            }
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "uri": "validate_nexus_home_page.feature"
+  },
+  {
+    "id": "validate-register-developer-page",
+    "description": "",
+    "name": "Validate Register Developer Page",
+    "keyword": "Feature",
+    "line": 1,
+    "elements": [
+      {
+        "id": "validate-register-developer-page;validate-register-developer-page",
+        "before": [
+          {
+            "result": {
+              "duration": 263502,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HtmlReportLogger.before(Scenario)"
+            }
+          }
+        ],
+        "description": "",
+        "name": "Validate Register Developer Page",
+        "keyword": "Scenario",
+        "line": 3,
+        "steps": [
+          {
+            "result": {
+              "duration": 631031963,
+              "status": "passed"
+            },
+            "name": "a \u0027Register a new developer\u0027 page is requested to load",
+            "keyword": "When ",
+            "line": 4,
+            "match": {
+              "location": "ValidateRegisterDeveloperPageSteps.whenARegisterANewConsumerPageIsRequestedToLoad()"
+            }
+          },
+          {
+            "result": {
+              "duration": 831169560,
+              "status": "passed"
+            },
+            "name": "a panel with title \u0027Register a new developer\u0027 should appear",
+            "keyword": "Then ",
+            "line": 5,
+            "match": {
+              "arguments": [
+                {
+                  "val": "Register a new developer",
+                  "offset": 20
+                }
+              ],
+              "location": "ValidateLoginPageSteps.thenAPanelWithTitleShouldAppear(String)"
+            }
+          },
+          {
+            "result": {
+              "duration": 8504720,
+              "status": "passed"
+            },
+            "name": "a \u0027Register\u0027 button should appear",
+            "keyword": "And ",
+            "line": 6,
+            "match": {
+              "arguments": [
+                {
+                  "val": "Register",
+                  "offset": 3
+                }
+              ],
+              "location": "ValidateLoginPageSteps.thenAButtonShouldAppear(String)"
+            }
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "uri": "validate_register_developer_page.feature"
+  },
+  {
+    "id": "validate-sonar-home-page",
+    "description": "",
+    "name": "Validate Sonar Home Page",
+    "keyword": "Feature",
+    "line": 1,
+    "elements": [
+      {
+        "id": "validate-sonar-home-page;validate-sonar-home-page",
+        "before": [
+          {
+            "result": {
+              "duration": 310808,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HtmlReportLogger.before(Scenario)"
+            }
+          }
+        ],
+        "description": "",
+        "name": "Validate Sonar Home Page",
+        "keyword": "Scenario",
+        "line": 3,
+        "steps": [
+          {
+            "result": {
+              "duration": 667043902,
+              "status": "passed"
+            },
+            "name": "the Sonar home page is requested to load",
+            "keyword": "When ",
+            "line": 4,
+            "match": {
+              "location": "ValidateSonarHomePageSteps.theSonarHomePageIsRequestedToLoad()"
+            }
+          },
+          {
+            "result": {
+              "duration": 161932,
+              "status": "passed"
+            },
+            "name": "the Sonar home page should appear",
+            "keyword": "Then ",
+            "line": 5,
+            "match": {
+              "location": "ValidateSonarHomePageSteps.theSonarHomePageShouldAppear()"
+            }
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "uri": "validate_sonar_home_page.feature"
+  }
+]
