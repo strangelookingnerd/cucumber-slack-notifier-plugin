@@ -51,11 +51,36 @@ public class CucumberResult {
 		return json.toString();
 	}
 
+	private String getJenkinsHyperlink(final String jenkinsUrl, final String jobName, final int buildNumber) {
+		StringBuilder s = new StringBuilder();
+		s.append(jenkinsUrl);
+		if (!jenkinsUrl.trim().endsWith("/")) {
+			s.append("/");
+		}
+		s.append("job/");
+		s.append(jobName);
+		s.append("/");
+		s.append(buildNumber);
+		s.append("/");
+		return s.toString();
+	}
+	
+	public String toHeader(final String jobName, final int buildNumber, final String jenkinsUrl) {
+		StringBuilder s = new StringBuilder();
+		s.append("Features: ");
+		s.append(getTotalFeatures());
+		s.append(", Scenarios: ");
+		s.append(getTotalScenarios());
+		s.append(", Build: <");
+		s.append(getJenkinsHyperlink(jenkinsUrl, jobName, buildNumber));
+		s.append("cucumber-html-reports/|");
+		s.append(buildNumber);
+		s.append(">");
+		return s.toString();
+	}
+	
 	private void addCaption(final JsonObject json, final int buildNumber, final String jobName, final String jenkinsUrl) {
-		final String hyperLink = jenkinsUrl + "/job/" + jobName + "/" + buildNumber + "/cucumber-html-reports/";
-		final String caption = "A total of " + getTotalFeatures() + " features consisting of " + getTotalScenarios()
-				+ " scenarios were executed for build: <" + hyperLink + "|" + buildNumber + ">";
-		json.addProperty("pretext", caption);
+		json.addProperty("pretext", toHeader(jobName, buildNumber, jenkinsUrl));
 	}
 	
 	private void addColourAndIcon(JsonObject json, String good, String value) {
@@ -64,7 +89,7 @@ public class CucumberResult {
 	}
 
 	private JsonArray getFields(final String jobName, final int buildNumber, final String jenkinsUrl) {
-		final String hyperLink = jenkinsUrl + "/job/" + jobName + "/" + buildNumber + "/cucumber-html-reports/";
+		final String hyperLink = getJenkinsHyperlink(jenkinsUrl, jobName, buildNumber) + "cucumber-html-reports/";
 		final JsonArray fields = new JsonArray();
 		fields.add(shortTitle("Features"));
 		fields.add(shortTitle("Pass %"));

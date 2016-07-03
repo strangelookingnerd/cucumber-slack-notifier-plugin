@@ -55,7 +55,7 @@ public class CucumberSlackPostBuildNotifier extends Recorder {
 		}
 
 		CucumberSlackService service = new CucumberSlackService(webhookUrl);
-		service.sendCucumberReportToSlack(build, json, channel);
+		service.sendCucumberReportToSlack(build, build.getWorkspace(), json, channel);
 
 		return true;
 	}

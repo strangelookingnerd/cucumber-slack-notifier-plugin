@@ -1,7 +1,7 @@
 package org.jenkinsci.plugins.slacknotifier;
 
 import hudson.FilePath;
-import hudson.model.AbstractBuild;
+import hudson.model.Run;
 import jenkins.model.JenkinsLocationConfiguration;
 
 import java.io.IOException;
@@ -24,11 +24,9 @@ public class CucumberSlackService {
 		this.jenkinsUrl = JenkinsLocationConfiguration.get().getUrl();
 	}
 
-	public void sendCucumberReportToSlack(AbstractBuild build, String json, String channel) {
+	public void sendCucumberReportToSlack(Run<?,?> build, FilePath workspace, String json, String channel) {
 		LOG.info("Posting cucumber reports to slack for '" + build.getParent().getDisplayName() + "'");
-		LOG.info("Cucumber reports are in '" + build.getWorkspace() + "'");
-
-		FilePath workspace = build.getWorkspace();
+		LOG.info("Cucumber reports are in '" + workspace + "'");
 
 		JsonElement jsonElement = getResultFileAsJsonElement(workspace, json);
 		SlackClient client = new SlackClient(webhookUrl, jenkinsUrl, channel);
@@ -38,15 +36,17 @@ public class CucumberSlackService {
 	private JsonElement getResultFileAsJsonElement(FilePath workspace, String json) {
 		final FilePath jsonPath = new FilePath(workspace, json);
 		LOG.info("file path: " + jsonPath);
+		
 		final Gson gson = new Gson();
 		try {
 			final JsonReader jsonReader = new JsonReader(new InputStreamReader(jsonPath.read()));
 			return gson.fromJson(jsonReader, JsonElement.class);
 		} catch (IOException e) {
+			LOG.severe("Exception occurred while reading test results: " + e);
 			throw new RuntimeException("Exception occurred while reading test results", e);
 		} catch (InterruptedException e) {
+			LOG.severe("Exception occurred while reading test results: " + e);
 			throw new RuntimeException("Exception occurred while reading test results", e);
 		}
 	}
-
 }
