@@ -2,6 +2,7 @@ package org.jenkinsci.plugins.slacknotifier;
 
 import hudson.FilePath;
 import hudson.model.AbstractBuild;
+import jenkins.model.JenkinsLocationConfiguration;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,9 +19,9 @@ public class CucumberSlackService {
 	private final String webhookUrl;
 	private final String jenkinsUrl;
 
-	public CucumberSlackService(String webhookUrl, String jenkinsUrl) {
+	public CucumberSlackService(String webhookUrl) {
 		this.webhookUrl = webhookUrl;
-		this.jenkinsUrl = jenkinsUrl;
+		this.jenkinsUrl = JenkinsLocationConfiguration.get().getUrl();
 	}
 
 	public void sendCucumberReportToSlack(AbstractBuild build, String json, String channel) {
@@ -42,6 +43,8 @@ public class CucumberSlackService {
 			final JsonReader jsonReader = new JsonReader(new InputStreamReader(jsonPath.read()));
 			return gson.fromJson(jsonReader, JsonElement.class);
 		} catch (IOException e) {
+			throw new RuntimeException("Exception occurred while reading test results", e);
+		} catch (InterruptedException e) {
 			throw new RuntimeException("Exception occurred while reading test results", e);
 		}
 	}

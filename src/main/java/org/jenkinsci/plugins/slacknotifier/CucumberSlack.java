@@ -31,8 +31,7 @@ public class CucumberSlack extends JobProperty<Job<?, ?>> {
 	public static final class CucumberSlackDescriptor extends JobPropertyDescriptor {
 
 		private String webHookEndpoint;
-		private String jenkinsServerUrl;
-
+		
 		public CucumberSlackDescriptor() {
 			load();
 		}
@@ -45,17 +44,12 @@ public class CucumberSlack extends JobProperty<Job<?, ?>> {
 		@Override
 		public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
 			webHookEndpoint = formData.getString("webHookEndpoint");
-			jenkinsServerUrl = formData.getString("jenkinsServerUrl");
 			save();
 			return super.configure(req, formData);
 		}
 
 		public String getWebHookEndpoint() {
 			return webHookEndpoint;
-		}
-
-		public String getJenkinsServerUrl() {
-			return jenkinsServerUrl;
 		}
 
 		public FormValidation doCheckWebHookEndpoint(@QueryParameter String value) throws IOException, ServletException {
@@ -69,23 +63,6 @@ public class CucumberSlack extends JobProperty<Job<?, ?>> {
 
 			if (!value.startsWith("https://hooks.slack.com/")) {
 				return FormValidation.warning("Slack endpoint should start with https://hooks.slack.com/");
-			}
-
-			return FormValidation.ok();
-		}
-
-		public FormValidation doCheckJenkinsServerUrl(@QueryParameter String value) throws IOException,
-				ServletException {
-			if (value.length() == 0) {
-				return FormValidation.error("Please set a jenkinsServerUrl");
-			}
-
-			if (value.length() < 10) {
-				return FormValidation.warning("Isn't the jenkinsServerUrl too short?");
-			}
-
-			if (!value.startsWith("http")) {
-				return FormValidation.warning("Jenkins URL should start with http");
 			}
 
 			return FormValidation.ok();

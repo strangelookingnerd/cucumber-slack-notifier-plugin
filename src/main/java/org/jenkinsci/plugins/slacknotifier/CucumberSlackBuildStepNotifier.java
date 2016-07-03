@@ -45,14 +45,13 @@ public class CucumberSlackBuildStepNotifier extends Builder {
 	@Override
 	public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
 		String webhookUrl = CucumberSlack.get().getWebHookEndpoint();
-		String jenkinsUrl = CucumberSlack.get().getJenkinsServerUrl();
-
+		
 		if (StringUtils.isEmpty(webhookUrl)) {
 			LOG.fine("Skipping cucumber slack notifier...");
 			return true;
 		}
 
-		CucumberSlackService service = new CucumberSlackService(webhookUrl, jenkinsUrl);
+		CucumberSlackService service = new CucumberSlackService(webhookUrl);
 		service.sendCucumberReportToSlack(build, json, channel);
 
 		return true;
@@ -67,8 +66,7 @@ public class CucumberSlackBuildStepNotifier extends Builder {
 	public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
 
 		private String webHookEndpoint;
-		private String jenkinsServerUrl;
-
+	
 		public DescriptorImpl() {
 			load();
 		}
@@ -92,17 +90,12 @@ public class CucumberSlackBuildStepNotifier extends Builder {
 		@Override
 		public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
 			webHookEndpoint = formData.getString("webHookEndpoint");
-			jenkinsServerUrl = formData.getString("jenkinsServerUrl");
 			save();
 			return super.configure(req, formData);
 		}
 
 		public String getWebHookEndpoint() {
 			return webHookEndpoint;
-		}
-
-		public String getJenkinsServerUrl() {
-			return jenkinsServerUrl;
 		}
 	}
 }

@@ -5,9 +5,5 @@
       description="This is the url of the webhook endpoint on slack">
       <f:textbox />
     </f:entry>
-    <f:entry title="Jenkins Server url" field="jenkinsServerUrl"
-      description="This is the url of the jenkins server">
-      <f:textbox />
-    </f:entry>
   </f:section>
 </j:jelly>

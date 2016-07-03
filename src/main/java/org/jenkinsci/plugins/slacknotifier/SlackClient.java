@@ -100,7 +100,7 @@ public class SlackClient {
 		try {
 			return new StringRequestEntity(json, CONTENT_TYPE, ENCODING);
 		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(ENCODING + " encoding is not supported with [" + json + "]");
+			throw new RuntimeException(ENCODING + " encoding is not supported with [" + json + "]", e);
 		}
 	}
 }
