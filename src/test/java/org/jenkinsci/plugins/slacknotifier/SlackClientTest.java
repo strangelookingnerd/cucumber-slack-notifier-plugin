@@ -20,8 +20,8 @@ import com.google.gson.stream.JsonReader;
 public class SlackClientTest {
 
 	@Test
-	public void canGenerateSlackMessage() throws FileNotFoundException {
-		JsonElement element = loadTestResultFile("dummy-results.json");
+	public void canGenerateSuccessfulSlackMessage() throws FileNotFoundException {
+		JsonElement element = loadTestResultFile("successful-result.json");
 		assertNotNull(element);
 		CucumberResult result = new SlackClient("http://slack.com/", "http://localhost:8080/", "channel").processResults(element);
 		assertNotNull(result);
@@ -29,6 +29,18 @@ public class SlackClientTest {
 		assertEquals(8, result.getTotalScenarios());
 		assertEquals(8, result.getTotalFeatures());
 		assertEquals(100, result.getPassPercentage());
+	}
+	
+	@Test
+	public void canGenerateFailedSlackMessage() throws FileNotFoundException {
+		JsonElement element = loadTestResultFile("failed-result.json");
+		assertNotNull(element);
+		CucumberResult result = new SlackClient("http://slack.com/", "http://localhost:8080/", "channel").processResults(element);
+		assertNotNull(result);
+		assertNotNull(result.getFeatureResults());
+		assertEquals(8, result.getTotalScenarios());
+		assertEquals(8, result.getTotalFeatures());
+		assertEquals(87, result.getPassPercentage());
 	}
 	
 	@Test
