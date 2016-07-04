@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>cucumber-slack-notifier</artifactId>
-	<version>0.9-SNAPSHOT</version>
+	<version>0.8.1</version>
 	<packaging>hpi</packaging>
 	<url>https://wiki.jenkins-ci.org/display/JENKINS/Cucumber+Slack+Notifier+Plugin</url>
 	
@@ -85,7 +85,7 @@
      <connection>scm:git:ssh://github.com/jenkinsci/cucumber-slack-notifier-plugin.git</connection>
      <developerConnection>scm:git:ssh://git@github.com/jenkinsci/cucumber-slack-notifier-plugin.git</developerConnection>
      <url>https://github.com/jenkinsci/cucumber-slack-notifier-plugin</url>
-     <tag>HEAD</tag>
+     <tag>cucumber-slack-notifier-0.8.1</tag>
    </scm>
 
   <build>
