@@ -32,10 +32,10 @@ public class SlackClient {
 		this.channel = channel;
 	}
 
-	public void postToSlack(JsonElement results, final String jobName, final int buildNumber) {
+	public void postToSlack(JsonElement results, final String jobName, final int buildNumber, final String extra) {
 		LOG.info("Publishing test report to slack channel: " + channel);
 		CucumberResult result = results == null ? dummyResults() : processResults(results);
-		String json = result.toSlackMessage(jobName, buildNumber, channel, jenkinsUrl);
+		String json = result.toSlackMessage(jobName, buildNumber, channel, jenkinsUrl, extra);
 		postToSlack(json);
 	}
 

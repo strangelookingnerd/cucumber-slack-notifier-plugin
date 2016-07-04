@@ -2,6 +2,8 @@ package org.jenkinsci.plugins.slacknotifier;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -33,10 +35,10 @@ public class CucumberResult {
 	}
 	
 	public String toSlackMessage(final String jobName,
-			final int buildNumber, final String channel, final String jenkinsUrl) {
+			final int buildNumber, final String channel, final String jenkinsUrl, final String extra) {
 		final JsonObject json = new JsonObject();
 		json.addProperty("channel", "#" + channel);
-		addCaption(json, buildNumber, jobName, jenkinsUrl);
+		addCaption(json, buildNumber, jobName, jenkinsUrl, extra);
 		json.add("fields", getFields(jobName, buildNumber, jenkinsUrl));
 
 		if (getPassPercentage() == 100) {
@@ -65,8 +67,11 @@ public class CucumberResult {
 		return s.toString();
 	}
 	
-	public String toHeader(final String jobName, final int buildNumber, final String jenkinsUrl) {
+	public String toHeader(final String jobName, final int buildNumber, final String jenkinsUrl, final String extra) {
 		StringBuilder s = new StringBuilder();
+		if (StringUtils.isNotEmpty(extra)) {
+			s.append(extra);
+		}
 		s.append("Features: ");
 		s.append(getTotalFeatures());
 		s.append(", Scenarios: ");
@@ -79,8 +84,8 @@ public class CucumberResult {
 		return s.toString();
 	}
 	
-	private void addCaption(final JsonObject json, final int buildNumber, final String jobName, final String jenkinsUrl) {
-		json.addProperty("pretext", toHeader(jobName, buildNumber, jenkinsUrl));
+	private void addCaption(final JsonObject json, final int buildNumber, final String jobName, final String jenkinsUrl, final String extra) {
+		json.addProperty("pretext", toHeader(jobName, buildNumber, jenkinsUrl, extra));
 	}
 	
 	private void addColourAndIcon(JsonObject json, String good, String value) {

@@ -52,7 +52,7 @@ public class CucumberSlackBuildStepNotifier extends Builder {
 		}
 
 		CucumberSlackService service = new CucumberSlackService(webhookUrl);
-		service.sendCucumberReportToSlack(build, build.getWorkspace(), json, channel);
+		service.sendCucumberReportToSlack(build, build.getWorkspace(), json, channel, null);
 
 		return true;
 	}
