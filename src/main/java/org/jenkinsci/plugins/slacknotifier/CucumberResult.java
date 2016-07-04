@@ -94,10 +94,9 @@ public class CucumberResult {
 		fields.add(shortTitle("Features"));
 		fields.add(shortTitle("Pass %"));
 		for (FeatureResult feature : getFeatureResults()) {
-			final String featureFileName = feature.getName();
-			String featureName = featureFileName.replace("-feature", "");
-			featureName = featureName.replaceAll("_", " ");
-			fields.add(shortObject("<" + hyperLink + featureFileName + ".html|" + featureName + ">"));
+			final String featureDisplayName = feature.getDisplayName();
+			final String featureFileName = feature.getFeatureUri();
+			fields.add(shortObject("<" + hyperLink + featureFileName + "|" + featureDisplayName + ">"));
 			fields.add(shortObject(feature.getPassPercentage() + " %"));
 		}
 		fields.add(shortObject("-------------------------------"));

@@ -23,19 +23,23 @@ public class SlackClientTest {
 	public void canGenerateSuccessfulSlackMessage() throws FileNotFoundException {
 		JsonElement element = loadTestResultFile("successful-result.json");
 		assertNotNull(element);
-		CucumberResult result = new SlackClient("http://slack.com/", "http://localhost:8080/", "channel").processResults(element);
+		CucumberResult result = new SlackClient("http://slack.com/", "http://jenkins:8080/", "channel").processResults(element);
 		assertNotNull(result);
 		assertNotNull(result.getFeatureResults());
 		assertEquals(8, result.getTotalScenarios());
 		assertEquals(8, result.getTotalFeatures());
 		assertEquals(100, result.getPassPercentage());
+		
+		String slackMessage = result.toSlackMessage("test-job", 7, "channel", "http://jenkins:8080/");
+		assertNotNull(slackMessage);
+		assertTrue(slackMessage.contains("<http://jenkins:8080/job/test-job/7/cucumber-html-reports/validate_gerrit_home_page-feature.html|validate gerrit home page>"));
 	}
 	
 	@Test
 	public void canGenerateFailedSlackMessage() throws FileNotFoundException {
 		JsonElement element = loadTestResultFile("failed-result.json");
 		assertNotNull(element);
-		CucumberResult result = new SlackClient("http://slack.com/", "http://localhost:8080/", "channel").processResults(element);
+		CucumberResult result = new SlackClient("http://slack.com/", "http://jenkins:8080/", "channel").processResults(element);
 		assertNotNull(result);
 		assertNotNull(result.getFeatureResults());
 		assertEquals(8, result.getTotalScenarios());
@@ -45,21 +49,21 @@ public class SlackClientTest {
 	
 	@Test
 	public void canGenerateGoodMessage() {
-		String slackMessage = successfulResult().toSlackMessage("test-job", 1, "channel", "http://localhost:8080/");
+		String slackMessage = successfulResult().toSlackMessage("test-job", 1, "channel", "http://jenkins:8080/");
 		assertNotNull(slackMessage);
 		assertTrue(slackMessage.contains("good"));
 	}
 
 	@Test
 	public void canGenerateMarginalMessage() {
-		String slackMessage = marginalResult().toSlackMessage("test-job", 1, "channel", "http://localhost:8080/");
+		String slackMessage = marginalResult().toSlackMessage("test-job", 1, "channel", "http://jenkins:8080/");
 		assertNotNull(slackMessage);
 		assertTrue(slackMessage.contains("warning"));
 	}
 
 	@Test
 	public void canGenerateBadMessage() {
-		String slackMessage = badResult().toSlackMessage("test-job", 1, "channel", "http://localhost:8080/");
+		String slackMessage = badResult().toSlackMessage("test-job", 1, "channel", "http://jenkins:8080/");
 		assertNotNull(slackMessage);
 		assertTrue(slackMessage.contains("danger"));
 	}
