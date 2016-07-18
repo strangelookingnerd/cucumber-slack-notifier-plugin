@@ -92,9 +92,7 @@ public class SlackClient {
 			}
 			totalScenarios = totalScenarios + scenariosTotal;
 			final int scenarioPassPercent = Math.round(((scenariosTotal - failed) * 100) / scenariosTotal);
-			if (scenarioPassPercent != 100) {
-				results.add(new FeatureResult(feature.get("uri").getAsString(), scenarioPassPercent));
-			} else if (!hideSuccessfulResults) {
+			if (scenarioPassPercent != 100 || !hideSuccessfulResults) {
 				results.add(new FeatureResult(feature.get("uri").getAsString(), scenarioPassPercent));
 			}
 		}
