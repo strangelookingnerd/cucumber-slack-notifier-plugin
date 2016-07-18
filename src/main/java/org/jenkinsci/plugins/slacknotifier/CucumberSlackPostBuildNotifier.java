@@ -29,11 +29,13 @@ public class CucumberSlackPostBuildNotifier extends Recorder {
 
 	private final String channel;
 	private final String json;
+	private final boolean hideSuccessfulResults;
 
 	@DataBoundConstructor
-	public CucumberSlackPostBuildNotifier(String channel, String json) {
+	public CucumberSlackPostBuildNotifier(String channel, String json, boolean hideSuccessfulResults) {
 		this.channel = channel;
 		this.json = json;
+		this.hideSuccessfulResults = hideSuccessfulResults;
 	}
 
 	public String getChannel() {
@@ -42,6 +44,10 @@ public class CucumberSlackPostBuildNotifier extends Recorder {
 
 	public String getJson() {
 		return json;
+	}
+
+	public boolean getHideSuccessfulResults() {
+		return hideSuccessfulResults;
 	}
 
 	@Override
@@ -54,8 +60,11 @@ public class CucumberSlackPostBuildNotifier extends Recorder {
 			return true;
 		}
 
+		// TODO Remove this line
+		LOG.info("hideSuccessfulResults = ***" + hideSuccessfulResults + "***");
+
 		CucumberSlackService service = new CucumberSlackService(webhookUrl);
-		service.sendCucumberReportToSlack(build, build.getWorkspace(), json, channel, null);
+		service.sendCucumberReportToSlack(build, build.getWorkspace(), json, channel, null, hideSuccessfulResults);
 
 		return true;
 	}

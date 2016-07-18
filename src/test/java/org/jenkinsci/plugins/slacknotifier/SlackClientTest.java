@@ -20,10 +20,10 @@ import com.google.gson.stream.JsonReader;
 public class SlackClientTest {
 
 	@Test
-	public void canGenerateSuccessfulSlackMessage() throws FileNotFoundException {
+	public void canGenerateFullSuccessfulSlackMessage() throws FileNotFoundException {
 		JsonElement element = loadTestResultFile("successful-result.json");
 		assertNotNull(element);
-		CucumberResult result = new SlackClient("http://slack.com/", "http://jenkins:8080/", "channel").processResults(element);
+		CucumberResult result = new SlackClient("http://slack.com/", "http://jenkins:8080/", "channel", false).processResults(element);
 		assertNotNull(result);
 		assertNotNull(result.getFeatureResults());
 		assertEquals(8, result.getTotalScenarios());
@@ -34,16 +34,43 @@ public class SlackClientTest {
 		assertNotNull(slackMessage);
 		assertTrue(slackMessage.contains("<http://jenkins:8080/job/test-job/7/cucumber-html-reports/validate_gerrit_home_page-feature.html|validate gerrit home page>"));
 	}
+
+	@Test
+	public void canGenerateMinimalSuccessfulSlackMessage() throws FileNotFoundException {
+		JsonElement element = loadTestResultFile("successful-result.json");
+		assertNotNull(element);
+		CucumberResult result = new SlackClient("http://slack.com/", "http://jenkins:8080/", "channel", true).processResults(element);
+		assertNotNull(result);
+		assertNotNull(result.getFeatureResults());
+		assertEquals(8, result.getTotalScenarios());
+		assertEquals(0, result.getTotalFeatures());
+		assertEquals(100, result.getPassPercentage());
+
+		String slackMessage = result.toSlackMessage("test-job", 7, "channel", "http://jenkins:8080/", null);
+		assertNotNull(slackMessage);
+	}
 	
 	@Test
-	public void canGenerateFailedSlackMessage() throws FileNotFoundException {
+	public void canGenerateFullFailedSlackMessage() throws FileNotFoundException {
 		JsonElement element = loadTestResultFile("failed-result.json");
 		assertNotNull(element);
-		CucumberResult result = new SlackClient("http://slack.com/", "http://jenkins:8080/", "channel").processResults(element);
+		CucumberResult result = new SlackClient("http://slack.com/", "http://jenkins:8080/", "channel", false).processResults(element);
 		assertNotNull(result);
 		assertNotNull(result.getFeatureResults());
 		assertEquals(8, result.getTotalScenarios());
 		assertEquals(8, result.getTotalFeatures());
+		assertEquals(87, result.getPassPercentage());
+	}
+
+	@Test
+	public void canGenerateMinimalFailedSlackMessage() throws FileNotFoundException {
+		JsonElement element = loadTestResultFile("failed-result.json");
+		assertNotNull(element);
+		CucumberResult result = new SlackClient("http://slack.com/", "http://jenkins:8080/", "channel", true).processResults(element);
+		assertNotNull(result);
+		assertNotNull(result.getFeatureResults());
+		assertEquals(8, result.getTotalScenarios());
+		assertEquals(1, result.getTotalFeatures());
 		assertEquals(87, result.getPassPercentage());
 	}
 	

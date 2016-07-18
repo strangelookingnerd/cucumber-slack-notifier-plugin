@@ -7,6 +7,9 @@
     <f:entry field="json" title="JSON Results File">
         <f:textbox />
     </f:entry>
+    <f:entry title="Hide Successful Results" field="hideSuccessfulResults" description="Only include details of failures in Slack message">
+        <f:checkbox />
+    </f:entry>
     <f:entry field="failOnError">
         <f:checkbox title="Fail On Error" default="false"/>
     </f:entry>

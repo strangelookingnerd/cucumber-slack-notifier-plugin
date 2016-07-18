@@ -6,4 +6,7 @@
   <f:entry title="JSON Result File" field="json" description="Location of the JSON result file for Cucumber">
     <f:textbox />
   </f:entry>
+  <f:entry title="Hide Successful Results" field="hideSuccessfulResults" description="Only include details of failures in Slack message">
+    <f:checkbox />
+  </f:entry>
 </j:jelly>
