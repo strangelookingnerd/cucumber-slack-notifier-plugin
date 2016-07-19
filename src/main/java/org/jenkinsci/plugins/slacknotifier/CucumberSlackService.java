@@ -24,12 +24,12 @@ public class CucumberSlackService {
 		this.jenkinsUrl = JenkinsLocationConfiguration.get().getUrl();
 	}
 
-	public void sendCucumberReportToSlack(Run<?,?> build, FilePath workspace, String json, String channel, String extra) {
+	public void sendCucumberReportToSlack(Run<?,?> build, FilePath workspace, String json, String channel, String extra, boolean hideSuccessfulResults) {
 		LOG.info("Posting cucumber reports to slack for '" + build.getParent().getDisplayName() + "'");
 		LOG.info("Cucumber reports are in '" + workspace + "'");
 
 		JsonElement jsonElement = getResultFileAsJsonElement(workspace, json);
-		SlackClient client = new SlackClient(webhookUrl, jenkinsUrl, channel);
+		SlackClient client = new SlackClient(webhookUrl, jenkinsUrl, channel, hideSuccessfulResults);
 		client.postToSlack(jsonElement, build.getParent().getDisplayName(), build.getNumber(), extra);
 	}
 

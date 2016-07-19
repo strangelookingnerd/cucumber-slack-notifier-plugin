@@ -25,11 +25,13 @@ public class SlackClient {
 	private final String webhookUrl;
 	private final String jenkinsUrl;
 	private final String channel;
+	private final boolean hideSuccessfulResults;
 
-	public SlackClient(String webhookUrl, String jenkinsUrl, String channel) {
+	public SlackClient(String webhookUrl, String jenkinsUrl, String channel, boolean hideSuccessfulResults) {
 		this.webhookUrl = webhookUrl;
 		this.jenkinsUrl = jenkinsUrl;
 		this.channel = channel;
+		this.hideSuccessfulResults = hideSuccessfulResults;
 	}
 
 	public void postToSlack(JsonElement results, final String jobName, final int buildNumber, final String extra) {
@@ -90,7 +92,9 @@ public class SlackClient {
 			}
 			totalScenarios = totalScenarios + scenariosTotal;
 			final int scenarioPassPercent = Math.round(((scenariosTotal - failed) * 100) / scenariosTotal);
-			results.add(new FeatureResult(feature.get("uri").getAsString(), scenarioPassPercent));
+			if (scenarioPassPercent != 100 || !hideSuccessfulResults) {
+				results.add(new FeatureResult(feature.get("uri").getAsString(), scenarioPassPercent));
+			}
 		}
 		passPercent = Math.round(((totalScenarios - failedScenarios) * 100) / totalScenarios);
 		return new CucumberResult(results, totalScenarios, passPercent);

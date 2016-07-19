@@ -24,6 +24,7 @@ public class CucumberSlackStep extends AbstractStepImpl {
 
     private final @Nonnull String channel;
     private String json;
+    private boolean hideSuccessfulResults;
     private String extra;
     private boolean failOnError;
 
@@ -36,6 +37,10 @@ public class CucumberSlackStep extends AbstractStepImpl {
         return json;
     }
 
+    public boolean getHideSuccessfulResults() {
+        return hideSuccessfulResults;
+    }
+
     public String getExtra() {
         return extra;
     }
@@ -43,6 +48,11 @@ public class CucumberSlackStep extends AbstractStepImpl {
     @DataBoundSetter
     public void setJson(String json) {
         this.json = Util.fixEmpty(json);
+    }
+
+    @DataBoundSetter
+    public void setHideSuccessfulResults(String hideSuccessfulResults) {
+        this.hideSuccessfulResults = Boolean.getBoolean(Util.fixEmpty(hideSuccessfulResults));
     }
     
     @DataBoundSetter
@@ -115,13 +125,14 @@ public class CucumberSlackStep extends AbstractStepImpl {
             
             String webHookEndpoint = cucumberSlackDesc.getWebHookEndpoint();
             String json = step.json;
+            boolean hideSuccessfulResults = step.hideSuccessfulResults;
             String channel = step.channel;
             String extra = step.extra;
-           
+
             CucumberSlackService slackService = new CucumberSlackService(webHookEndpoint);
             
             try {
-            	slackService.sendCucumberReportToSlack(run, workspace, json, channel, extra);
+            	slackService.sendCucumberReportToSlack(run, workspace, json, channel, extra, hideSuccessfulResults);
             } catch (Exception exp) {
             	if (step.failOnError) {
             		throw new AbortException("Unable to send slack notification: " + exp);
