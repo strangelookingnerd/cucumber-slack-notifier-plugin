@@ -10,7 +10,7 @@ import org.apache.commons.httpclient.methods.StringRequestEntity;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -41,7 +41,7 @@ public class SlackClient {
     }
 
     private CucumberResult dummyResults() {
-        return new CucumberResult(Arrays.asList(new FeatureResult("Dummy Test", 100)), 1, 100);
+        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test", 100)), 1, 100);
     }
 
 

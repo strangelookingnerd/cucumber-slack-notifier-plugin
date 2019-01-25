@@ -6,7 +6,7 @@ import com.google.gson.stream.JsonReader;
 import org.junit.Test;
 
 import java.io.*;
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.Assert.*;
 
@@ -102,14 +102,14 @@ public class SlackClientTest {
     }
 
     private CucumberResult successfulResult() {
-        return new CucumberResult(Arrays.asList(new FeatureResult("Dummy Test", 100)), 1, 100);
+        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test", 100)), 1, 100);
     }
 
     private CucumberResult badResult() {
-        return new CucumberResult(Arrays.asList(new FeatureResult("Dummy Test", 0)), 1, 0);
+        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test", 0)), 1, 0);
     }
 
     private CucumberResult marginalResult() {
-        return new CucumberResult(Arrays.asList(new FeatureResult("Dummy Test", 99)), 1, 99);
+        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test", 99)), 1, 99);
     }
 }

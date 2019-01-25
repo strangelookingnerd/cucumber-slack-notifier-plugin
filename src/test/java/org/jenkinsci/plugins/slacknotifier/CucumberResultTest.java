@@ -2,7 +2,7 @@ package org.jenkinsci.plugins.slacknotifier;
 
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -29,6 +29,6 @@ public class CucumberResultTest {
     }
 
     private CucumberResult successfulResult() {
-        return new CucumberResult(Arrays.asList(new FeatureResult("Dummy Test", 100)), 1, 100);
+        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test", 100)), 1, 100);
     }
 }
