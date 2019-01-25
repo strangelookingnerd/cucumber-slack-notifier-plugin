@@ -2,6 +2,7 @@ package org.jenkinsci.plugins.slacknotifier;
 
 import java.util.List;
 
+import com.google.gson.JsonPrimitive;
 import org.apache.commons.lang.StringUtils;
 
 import com.google.gson.JsonArray;
@@ -11,44 +12,52 @@ public class CucumberResult {
 	final List<FeatureResult> featureResults;
 	final int passPercentage;
 	final int totalScenarios;
-	
+
 	public CucumberResult(List<FeatureResult> featureResults, int totalScenarios, int passPercentage) {
 		this.featureResults = featureResults;
 		this.totalScenarios = totalScenarios;
 		this.passPercentage = passPercentage;
 	}
-	
+
 	public int getPassPercentage() {
 		return this.passPercentage;
 	}
-	
+
 	public int getTotalFeatures() {
 		return this.featureResults.size();
 	}
-	
+
 	public int getTotalScenarios() {
 		return this.totalScenarios;
 	}
-	
+
 	public List<FeatureResult> getFeatureResults() {
 		return this.featureResults;
 	}
-	
+
 	public String toSlackMessage(final String jobName,
-			final int buildNumber, final String channel, final String jenkinsUrl, final String extra) {
+								 final int buildNumber, final String channel, final String jenkinsUrl, final String extra) {
 		final JsonObject json = new JsonObject();
 		json.addProperty("channel", "#" + channel);
 		addCaption(json, buildNumber, jobName, jenkinsUrl, extra);
-		json.add("fields", getFields(jobName, buildNumber, jenkinsUrl));
+
+		final JsonArray attachmentsJson = new JsonArray();
+		JsonObject fields = new JsonObject();
+		fields.add("fields", getFields(jobName, buildNumber, jenkinsUrl));
+		attachmentsJson.add(fields);
 
 		if (getPassPercentage() == 100) {
-			addColourAndIcon(json, "good", ":thumbsup:");
+			addAttachmentColor(attachmentsJson, "good");
+			json.addProperty("icon_emoji", ":thumbsup:");
 		} else if (getPassPercentage() >= 98) {
-			addColourAndIcon(json, "warning", ":hand:");
+			addAttachmentColor(attachmentsJson, "warning");
+			json.addProperty("icon_emoji", ":hand:");
 		} else {
-			addColourAndIcon(json, "danger", ":thumbsdown:");
+			addAttachmentColor(attachmentsJson, "danger");
+			json.addProperty("icon_emoji", ":thumbsdown:");
 		}
 
+		json.add("attachments", attachmentsJson);
 		json.addProperty("username", jobName);
 		return json.toString();
 	}
@@ -66,7 +75,7 @@ public class CucumberResult {
 		s.append("/");
 		return s.toString();
 	}
-	
+
 	public String toHeader(final String jobName, final int buildNumber, final String jenkinsUrl, final String extra) {
 		StringBuilder s = new StringBuilder();
 		if (StringUtils.isNotEmpty(extra)) {
@@ -83,14 +92,16 @@ public class CucumberResult {
 		s.append(">");
 		return s.toString();
 	}
-	
+
 	private void addCaption(final JsonObject json, final int buildNumber, final String jobName, final String jenkinsUrl, final String extra) {
-		json.addProperty("pretext", toHeader(jobName, buildNumber, jenkinsUrl, extra));
+		json.addProperty("text", toHeader(jobName, buildNumber, jenkinsUrl, extra));
 	}
-	
-	private void addColourAndIcon(JsonObject json, String good, String value) {
-		json.addProperty("color", good);
-		json.addProperty("icon_emoji", value);
+
+	private void addAttachmentColor(JsonArray json, String colorValue) {
+		JsonPrimitive colorPropertyValue = new JsonPrimitive(colorValue);
+		JsonObject colorProperty = new JsonObject();
+		colorProperty.add("color", colorPropertyValue);
+		json.add(colorProperty);
 	}
 
 	private JsonArray getFields(final String jobName, final int buildNumber, final String jenkinsUrl) {
@@ -111,7 +122,7 @@ public class CucumberResult {
 		return fields;
 	}
 
-	
+
 	private JsonObject shortObject(final String value) {
 		JsonObject obj = new JsonObject();
 		obj.addProperty("value", value);
