@@ -18,7 +18,7 @@ public class FeatureResult {
 	}
 	
 	public String getFeatureUri() {
-		return this.name.replace(".feature", "-feature") + ".html";
+		return this.name.replaceAll("/", "-").replace(".feature", "-feature") + ".html";
 	}
 	
 	public String getDisplayName() {
