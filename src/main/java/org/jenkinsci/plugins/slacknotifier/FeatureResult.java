@@ -1,8 +1,8 @@
 package org.jenkinsci.plugins.slacknotifier;
 
 public class FeatureResult {
-    final String name;
-    final int passPercentage;
+    private final String name;
+    private final int passPercentage;
 
     public FeatureResult(String name, int passPercentage) {
         this.name = name;

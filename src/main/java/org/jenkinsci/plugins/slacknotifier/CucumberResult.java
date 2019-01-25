@@ -8,9 +8,9 @@ import org.apache.commons.lang.StringUtils;
 import java.util.List;
 
 public class CucumberResult {
-    final List<FeatureResult> featureResults;
-    final int passPercentage;
-    final int totalScenarios;
+    private final List<FeatureResult> featureResults;
+    private final int passPercentage;
+    private final int totalScenarios;
 
     public CucumberResult(List<FeatureResult> featureResults, int totalScenarios, int passPercentage) {
         this.featureResults = featureResults;
