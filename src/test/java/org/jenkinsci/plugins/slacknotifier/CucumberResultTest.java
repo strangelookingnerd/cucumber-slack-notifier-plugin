@@ -29,6 +29,6 @@ public class CucumberResultTest {
     }
 
     private CucumberResult successfulResult() {
-        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test", 100)), 1, 100);
+        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test","Dummy Test", 100)), 1, 100);
     }
 }

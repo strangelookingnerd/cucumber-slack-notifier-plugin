@@ -1,28 +1,30 @@
 package org.jenkinsci.plugins.slacknotifier;
 
 public class FeatureResult {
+    private final String uri;
     private final String name;
     private final int passPercentage;
 
-    public FeatureResult(String name, int passPercentage) {
+    public FeatureResult(String uri, String name, int passPercentage) {
+        this.uri = uri;
         this.name = name;
         this.passPercentage = passPercentage;
     }
 
     public String toString() {
-        return this.name + "=" + this.passPercentage;
+        return this.uri + "=" + this.passPercentage;
     }
 
-    public String getName() {
-        return this.name;
+    public String getUri() {
+        return this.uri;
     }
 
     public String getFeatureUri() {
-        return this.name.replaceAll("/", "-").replace(".feature", "-feature") + ".html";
+        return this.uri.replaceAll("/", "-").replace(".feature", "-feature") + ".html";
     }
 
     public String getDisplayName() {
-        return this.name.replaceAll("_", " ").replace(".feature", "");
+        return this.name;
     }
 
     public int getPassPercentage() {

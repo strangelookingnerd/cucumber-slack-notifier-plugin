@@ -41,7 +41,7 @@ public class SlackClient {
     }
 
     private CucumberResult dummyResults() {
-        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test", 100)), 1, 100);
+        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test","Dummy Test", 100)), 1, 100);
     }
 
 
@@ -92,7 +92,7 @@ public class SlackClient {
             totalScenarios = totalScenarios + scenariosTotal;
             final int scenarioPassPercent = Math.round(((scenariosTotal - failed) * 100) / scenariosTotal);
             if (scenarioPassPercent != 100 || !hideSuccessfulResults) {
-                results.add(new FeatureResult(feature.get("uri").getAsString(), scenarioPassPercent));
+                results.add(new FeatureResult(feature.get("uri").getAsString(), feature.get("name").getAsString(), scenarioPassPercent));
             }
         }
         passPercent = Math.round(((totalScenarios - failedScenarios) * 100) / totalScenarios);

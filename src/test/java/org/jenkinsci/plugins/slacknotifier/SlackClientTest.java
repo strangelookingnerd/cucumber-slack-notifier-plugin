@@ -25,7 +25,7 @@ public class SlackClientTest {
 
         String slackMessage = result.toSlackMessage("test-job", 7, "channel", "http://jenkins:8080/", null);
         assertNotNull(slackMessage);
-        assertTrue(slackMessage.contains("<http://jenkins:8080/job/test-job/7/cucumber-html-reports/validate_gerrit_home_page-feature.html|validate gerrit home page>"));
+        assertTrue(slackMessage.contains("<http://jenkins:8080/job/test-job/7/cucumber-html-reports/validate_gerrit_home_page-feature.html|Validate Gerrit Home Page>"));
     }
 
     @Test
@@ -102,14 +102,14 @@ public class SlackClientTest {
     }
 
     private CucumberResult successfulResult() {
-        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test", 100)), 1, 100);
+        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test","Dummy Test", 100)), 1, 100);
     }
 
     private CucumberResult badResult() {
-        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test", 0)), 1, 0);
+        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test","Dummy Test", 0)), 1, 0);
     }
 
     private CucumberResult marginalResult() {
-        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test", 99)), 1, 99);
+        return new CucumberResult(Collections.singletonList(new FeatureResult("Dummy Test","Dummy Test", 99)), 1, 99);
     }
 }
