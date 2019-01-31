@@ -17,7 +17,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <workflow.version>1.11</workflow.version>
+        <workflow.version>2.13</workflow.version>
     </properties>
 
     <developers>
@@ -84,8 +84,7 @@
 
     <scm>
         <connection>scm:git:ssh://github.com/jenkinsci/cucumber-slack-notifier-plugin.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/cucumber-slack-notifier-plugin.git
-        </developerConnection>
+        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/cucumber-slack-notifier-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/cucumber-slack-notifier-plugin</url>
         <tag>HEAD</tag>
     </scm>
