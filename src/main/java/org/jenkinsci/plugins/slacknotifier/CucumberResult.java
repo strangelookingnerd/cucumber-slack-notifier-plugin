@@ -1,6 +1,7 @@
 package org.jenkinsci.plugins.slacknotifier;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import org.apache.commons.lang.StringUtils;
@@ -95,11 +96,8 @@ public class CucumberResult {
         json.addProperty("text", toHeader(jobName, buildNumber, jenkinsUrl, extra));
     }
 
-    private void addAttachmentColor(JsonArray json, String colorValue) {
-        JsonPrimitive colorPropertyValue = new JsonPrimitive(colorValue);
-        JsonObject colorProperty = new JsonObject();
-        colorProperty.add("color", colorPropertyValue);
-        json.add(colorProperty);
+    private void addAttachmentColor(JsonArray jsonArray, String colorValue) {
+        jsonArray.get(0).getAsJsonObject().addProperty("color", colorValue);
     }
 
     private JsonArray getFields(final String jobName, final int buildNumber, final String jenkinsUrl) {
