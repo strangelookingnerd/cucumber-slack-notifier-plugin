@@ -34,10 +34,9 @@ public class CucumberResult {
         return this.featureResults;
     }
 
-    public String toSlackMessage(final String jobName,
-                                 final int buildNumber, final String channel, final String jenkinsUrl, final String extra) {
+    public String toSlackMessage(final String jobName, final int buildNumber, final String jenkinsUrl, final String extra) {
         final JsonObject json = new JsonObject();
-        json.addProperty("channel", "#" + channel);
+        json.addProperty("channel", "#");
         addCaption(json, buildNumber, jobName, jenkinsUrl, extra);
 
         final JsonArray attachmentsJson = new JsonArray();
