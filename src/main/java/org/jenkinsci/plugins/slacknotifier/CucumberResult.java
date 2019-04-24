@@ -105,10 +105,12 @@ public class CucumberResult {
         final JsonArray fields = new JsonArray();
         fields.add(shortTitle("Features"));
         fields.add(shortTitle("Pass %"));
+        int counter = 0;
         for (FeatureResult feature : getFeatureResults()) {
+            counter++;
             final String featureDisplayName = feature.getDisplayName();
-            final String featureFileName = feature.getFeatureUri();
-            fields.add(shortObject("<" + hyperLink + featureFileName + "|" + featureDisplayName + ">"));
+            final String featureFileUri = feature.getUri();
+            fields.add(shortObject("<" + hyperLink + "report-feature_" + counter + "_" + toValidFileName(featureFileUri) + ".html|" + featureDisplayName + ">"));
             fields.add(shortObject(feature.getPassPercentage() + " %"));
         }
         fields.add(shortObject("-------------------------------"));
@@ -132,4 +134,16 @@ public class CucumberResult {
         obj.addProperty("short", true);
         return obj;
     }
+
+    /**
+     * Converts characters of passed string and replaces to hash which can be treated as valid file name
+     *
+     * @param fileName sequence that should be converted
+     * @return converted string
+     */
+    private String toValidFileName(String fileName) {
+        // adds MAX_VALUE to eliminate minus character which might be returned by hashCode()
+        return Long.toString((long) fileName.hashCode() + Integer.MAX_VALUE);
+    }
+
 }

@@ -19,10 +19,6 @@ public class FeatureResult {
         return this.uri;
     }
 
-    public String getFeatureUri() {
-        return this.uri.replaceAll("/", "-").replace(".feature", "-feature") + ".html";
-    }
-
     public String getDisplayName() {
         return this.name;
     }
