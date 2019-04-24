@@ -25,7 +25,8 @@ public class SlackClientTest {
 
         String slackMessage = result.toSlackMessage("test-job", 7, "http://jenkins:8080/", null);
         assertNotNull(slackMessage);
-        assertTrue(slackMessage.contains("<http://jenkins:8080/job/test-job/7/cucumber-html-reports/report-feature_2_552978313.html|Validate Gerrit Home Page>"));
+        assertTrue(slackMessage.contains("<http://jenkins:8080/job/test-job/7/cucumber-html-reports/report-feature_751168504.html|Validate Confluence Home Page>"));
+        assertTrue(slackMessage.contains("<http://jenkins:8080/job/test-job/7/cucumber-html-reports/report-feature_1_552978313.html|Validate Gerrit Home Page>"));
     }
 
     @Test

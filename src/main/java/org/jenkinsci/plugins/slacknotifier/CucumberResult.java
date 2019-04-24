@@ -1,9 +1,7 @@
 package org.jenkinsci.plugins.slacknotifier;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
@@ -105,14 +103,7 @@ public class CucumberResult {
         final JsonArray fields = new JsonArray();
         fields.add(shortTitle("Features"));
         fields.add(shortTitle("Pass %"));
-        int counter = 0;
-        for (FeatureResult feature : getFeatureResults()) {
-            counter++;
-            final String featureDisplayName = feature.getDisplayName();
-            final String featureFileUri = feature.getUri();
-            fields.add(shortObject("<" + hyperLink + "report-feature_" + counter + "_" + toValidFileName(featureFileUri) + ".html|" + featureDisplayName + ">"));
-            fields.add(shortObject(feature.getPassPercentage() + " %"));
-        }
+        generateFeaturesFields(fields, hyperLink);
         fields.add(shortObject("-------------------------------"));
         fields.add(shortObject("-------"));
         fields.add(shortObject("Total Passed"));
@@ -120,6 +111,22 @@ public class CucumberResult {
         return fields;
     }
 
+    private void generateFeaturesFields(JsonArray fields, String hyperLink){
+        int counter = 0;
+        for (FeatureResult feature : getFeatureResults()) {
+            final String featureDisplayName = feature.getDisplayName();
+            final String featureFileUri = feature.getUri();
+
+            if (counter == 0){
+                fields.add(shortObject("<" + hyperLink + "report-feature_" + toValidFileName(featureFileUri) + ".html|" + featureDisplayName + ">"));
+            }else{
+                fields.add(shortObject("<" + hyperLink + "report-feature_" + counter + "_" + toValidFileName(featureFileUri) + ".html|" + featureDisplayName + ">"));
+            }
+
+            fields.add(shortObject(feature.getPassPercentage() + " %"));
+            counter++;
+        }
+    }
 
     private JsonObject shortObject(final String value) {
         JsonObject obj = new JsonObject();
