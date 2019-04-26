@@ -1,3 +1,4 @@
+<?jelly escape-by-default='true'?>
 <div>
   This plugins posts summarised Cucumber report information to Slack
 </div>

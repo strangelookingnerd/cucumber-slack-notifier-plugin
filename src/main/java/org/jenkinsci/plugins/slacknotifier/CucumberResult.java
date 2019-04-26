@@ -2,7 +2,6 @@ package org.jenkinsci.plugins.slacknotifier;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
@@ -34,10 +33,9 @@ public class CucumberResult {
         return this.featureResults;
     }
 
-    public String toSlackMessage(final String jobName,
-                                 final int buildNumber, final String channel, final String jenkinsUrl, final String extra) {
+    public String toSlackMessage(final String jobName, final int buildNumber, final String jenkinsUrl, final String extra) {
         final JsonObject json = new JsonObject();
-        json.addProperty("channel", "#" + channel);
+        json.addProperty("channel", "#");
         addCaption(json, buildNumber, jobName, jenkinsUrl, extra);
 
         final JsonArray attachmentsJson = new JsonArray();
@@ -96,11 +94,8 @@ public class CucumberResult {
         json.addProperty("text", toHeader(jobName, buildNumber, jenkinsUrl, extra));
     }
 
-    private void addAttachmentColor(JsonArray json, String colorValue) {
-        JsonPrimitive colorPropertyValue = new JsonPrimitive(colorValue);
-        JsonObject colorProperty = new JsonObject();
-        colorProperty.add("color", colorPropertyValue);
-        json.add(colorProperty);
+    private void addAttachmentColor(JsonArray jsonArray, String colorValue) {
+        jsonArray.get(0).getAsJsonObject().addProperty("color", colorValue);
     }
 
     private JsonArray getFields(final String jobName, final int buildNumber, final String jenkinsUrl) {
@@ -108,12 +103,7 @@ public class CucumberResult {
         final JsonArray fields = new JsonArray();
         fields.add(shortTitle("Features"));
         fields.add(shortTitle("Pass %"));
-        for (FeatureResult feature : getFeatureResults()) {
-            final String featureDisplayName = feature.getDisplayName();
-            final String featureFileName = feature.getFeatureUri();
-            fields.add(shortObject("<" + hyperLink + featureFileName + "|" + featureDisplayName + ">"));
-            fields.add(shortObject(feature.getPassPercentage() + " %"));
-        }
+        generateFeaturesFields(fields, hyperLink);
         fields.add(shortObject("-------------------------------"));
         fields.add(shortObject("-------"));
         fields.add(shortObject("Total Passed"));
@@ -121,6 +111,22 @@ public class CucumberResult {
         return fields;
     }
 
+    private void generateFeaturesFields(JsonArray fields, String hyperLink){
+        int counter = 0;
+        for (FeatureResult feature : getFeatureResults()) {
+            final String featureDisplayName = feature.getDisplayName();
+            final String featureFileUri = feature.getUri();
+
+            if (counter == 0){
+                fields.add(shortObject("<" + hyperLink + "report-feature_" + toValidFileName(featureFileUri) + ".html|" + featureDisplayName + ">"));
+            }else{
+                fields.add(shortObject("<" + hyperLink + "report-feature_" + counter + "_" + toValidFileName(featureFileUri) + ".html|" + featureDisplayName + ">"));
+            }
+
+            fields.add(shortObject(feature.getPassPercentage() + " %"));
+            counter++;
+        }
+    }
 
     private JsonObject shortObject(final String value) {
         JsonObject obj = new JsonObject();
@@ -135,4 +141,16 @@ public class CucumberResult {
         obj.addProperty("short", true);
         return obj;
     }
+
+    /**
+     * Converts characters of passed string and replaces to hash which can be treated as valid file name
+     *
+     * @param fileName sequence that should be converted
+     * @return converted string
+     */
+    private String toValidFileName(String fileName) {
+        // adds MAX_VALUE to eliminate minus character which might be returned by hashCode()
+        return Long.toString((long) fileName.hashCode() + Integer.MAX_VALUE);
+    }
+
 }

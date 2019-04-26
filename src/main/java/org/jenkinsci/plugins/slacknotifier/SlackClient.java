@@ -21,22 +21,20 @@ public class SlackClient {
     private static final String ENCODING = "UTF-8";
     private static final String CONTENT_TYPE = "application/json";
 
-    private final String webhookUrl;
     private final String jenkinsUrl;
-    private final String channel;
+    private final String channelWebhookUrl;
     private final boolean hideSuccessfulResults;
 
-    public SlackClient(String webhookUrl, String jenkinsUrl, String channel, boolean hideSuccessfulResults) {
-        this.webhookUrl = webhookUrl;
+    public SlackClient(String jenkinsUrl, String channelWebhookUrl, boolean hideSuccessfulResults) {
         this.jenkinsUrl = jenkinsUrl;
-        this.channel = channel;
+        this.channelWebhookUrl = channelWebhookUrl;
         this.hideSuccessfulResults = hideSuccessfulResults;
     }
 
     public void postToSlack(JsonElement results, final String jobName, final int buildNumber, final String extra) {
-        LOG.info("Publishing test report to slack channel: " + channel);
+        LOG.info("Publishing test report to slack channelWebhookUrl: " + channelWebhookUrl);
         CucumberResult result = results == null ? dummyResults() : processResults(results);
-        String json = result.toSlackMessage(jobName, buildNumber, channel, jenkinsUrl, extra);
+        String json = result.toSlackMessage(jobName, buildNumber, jenkinsUrl, extra);
         postToSlack(json);
     }
 
@@ -48,7 +46,7 @@ public class SlackClient {
     private void postToSlack(String json) {
         LOG.fine("Json being posted: " + json);
         StringRequestEntity requestEntity = getStringRequestEntity(json);
-        PostMethod postMethod = new PostMethod(webhookUrl);
+        PostMethod postMethod = new PostMethod(channelWebhookUrl);
         postMethod.setRequestEntity(requestEntity);
         postToSlack(postMethod);
     }
@@ -74,11 +72,14 @@ public class SlackClient {
         for (JsonElement featureElement : features) {
             JsonObject feature = featureElement.getAsJsonObject();
             JsonArray elements = feature.get("elements").getAsJsonArray();
-            int scenariosTotal = elements.size();
+            int scenariosTotal = 0;
             int failed = 0;
             for (JsonElement scenarioElement : elements) {
                 JsonObject scenario = scenarioElement.getAsJsonObject();
                 JsonArray steps = scenario.get("steps").getAsJsonArray();
+                if (scenario.get("type").getAsString().equalsIgnoreCase("scenario")){
+                    scenariosTotal = scenariosTotal + 1;
+                }
                 for (JsonElement stepElement : steps) {
                     JsonObject step = stepElement.getAsJsonObject();
                     String result = step.get("result").getAsJsonObject().get("status").getAsString();
