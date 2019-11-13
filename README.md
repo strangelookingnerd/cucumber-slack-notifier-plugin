@@ -17,9 +17,7 @@ The following options are available:
 
 TODO: add a screen shot here 
 
-### Build Configuration
+* Channel Webhook URL - slack channel Webhook URL to post result to
+* JSON Result File - json file containing the cucumber results, e.g. target/cucumber.json
 
-* channel - slack channel to post result to
-* json - json file containing the cucumber results, e.g. target/cucumber.json
-
-TODO: add a screen shot here 
+![config](https://i.ibb.co/sj6X6T8/Screenshot-from-2019-04-23-14-46-47.png)
