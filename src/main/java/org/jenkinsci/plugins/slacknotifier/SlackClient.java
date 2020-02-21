@@ -66,7 +66,7 @@ public class SlackClient {
     public CucumberResult processResults(JsonElement resultElement) {
         int totalScenarios = 0;
         int passPercent = 0;
-        List<FeatureResult> results = new ArrayList<FeatureResult>();
+        List<FeatureResult> results = new ArrayList<>();
         JsonArray features = resultElement.getAsJsonArray();
         int failedScenarios = 0;
         for (JsonElement featureElement : features) {

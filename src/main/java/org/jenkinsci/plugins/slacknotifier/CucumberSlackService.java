@@ -37,10 +37,7 @@ public class CucumberSlackService {
         try {
             final JsonReader jsonReader = new JsonReader(new InputStreamReader(jsonPath.read()));
             return gson.fromJson(jsonReader, JsonElement.class);
-        } catch (IOException e) {
-            LOG.severe("Exception occurred while reading test results: " + e);
-            throw new RuntimeException("Exception occurred while reading test results", e);
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             LOG.severe("Exception occurred while reading test results: " + e);
             throw new RuntimeException("Exception occurred while reading test results", e);
         }
