@@ -4,19 +4,22 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>2.13</version>
-        <relativePath />
+        <version>4.49</version>
+        <relativePath/>
     </parent>
 
     <artifactId>cucumber-slack-notifier</artifactId>
-    <version>0.9.0</version>
+    <version>${revision}${changelist}</version>
     <packaging>hpi</packaging>
-    <url>https://wiki.jenkins-ci.org/display/JENKINS/Cucumber+Slack+Notifier+Plugin</url>
+    <url>https://github.com/${gitHubRepo}</url>
 
     <properties>
+        <revision>0.10.0</revision>
+        <changelist>-SNAPSHOT</changelist>
+        <gitHubRepo>jenkinsci/cucumber-slack-notifier-plugin</gitHubRepo>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <workflow.version>2.13</workflow.version>
+        <jenkins.version>2.346.3</jenkins.version>
     </properties>
 
     <developers>
@@ -29,63 +32,74 @@
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
 
-    <repositories>
-        <repository>
-            <id>repo.jenkins-ci.org</id>
-            <url>http://repo.jenkins-ci.org/public/</url>
-        </repository>
-    </repositories>
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.jenkins.tools.bom</groupId>
+                <artifactId>bom-2.346.x</artifactId>
+                <version>1670.v7f165fc7a_079</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.5</version>
         </dependency>
+        <dependency>
+            <groupId>io.jenkins.plugins</groupId>
+            <artifactId>commons-httpclient3-api</artifactId>
+            <version>3.1-3</version>
+        </dependency>
         <!-- for workflow support -->
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-step-api</artifactId>
-            <version>${workflow.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-cps</artifactId>
-            <version>${workflow.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-job</artifactId>
-            <version>${workflow.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency> <!-- StepConfigTester -->
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-step-api</artifactId>
             <classifier>tests</classifier>
-            <version>${workflow.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>repo.jenkins-ci.org</id>
+            <url>https://repo.jenkins-ci.org/public/</url>
+        </repository>
+    </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>repo.jenkins-ci.org</id>
-            <url>http://repo.jenkins-ci.org/public/</url>
+            <url>https://repo.jenkins-ci.org/public/</url>
         </pluginRepository>
     </pluginRepositories>
 
     <scm>
-        <connection>scm:git:ssh://github.com/jenkinsci/cucumber-slack-notifier-plugin.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/cucumber-slack-notifier-plugin.git</developerConnection>
-        <url>https://github.com/jenkinsci/cucumber-slack-notifier-plugin</url>
-        <tag>cucumber-slack-notifier-0.9.0</tag>
+        <connection>scm:git:ssh://github.com/${gitHubRepo}.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/${gitHubRepo}.git</developerConnection>
+        <url>https://github.com/${gitHubRepo}</url>
+        <tag>${scmTag}</tag>
     </scm>
 
     <build>
@@ -93,7 +107,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.maven.scm</groupId>
@@ -102,16 +115,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.5</version>
-                <configuration>
-                    <failOnError>false</failOnError>
-                    <threshold>Low</threshold>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
-
 </project>
