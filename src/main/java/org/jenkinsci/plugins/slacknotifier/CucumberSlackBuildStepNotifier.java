@@ -1,6 +1,7 @@
 package org.jenkinsci.plugins.slacknotifier;
 
 import hudson.Extension;
+import hudson.FilePath;
 import hudson.Launcher;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
@@ -55,9 +56,12 @@ public class CucumberSlackBuildStepNotifier extends Builder {
         }
 
         CucumberSlackService service = new CucumberSlackService(webhookUrl);
-        service.sendCucumberReportToSlack(build, build.getWorkspace(), json, channel, null, hideSuccessfulResults);
-
-        return true;
+        final FilePath workspace = build.getWorkspace();
+        if (workspace != null) {
+            service.sendCucumberReportToSlack(build, workspace, json, channel, null, hideSuccessfulResults);
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -91,12 +91,12 @@ public class SlackClient {
                 }
             }
             totalScenarios = totalScenarios + scenariosTotal;
-            final int scenarioPassPercent = Math.round(((scenariosTotal - failed) * 100) / scenariosTotal);
+            final int scenarioPassPercent = ((scenariosTotal - failed) * 100) / scenariosTotal;
             if (scenarioPassPercent != 100 || !hideSuccessfulResults) {
                 results.add(new FeatureResult(feature.get("uri").getAsString(), feature.get("name").getAsString(), scenarioPassPercent));
             }
         }
-        passPercent = Math.round(((totalScenarios - failedScenarios) * 100) / totalScenarios);
+        passPercent = ((totalScenarios - failedScenarios) * 100) / totalScenarios;
         return new CucumberResult(results, totalScenarios, passPercent);
     }
 
