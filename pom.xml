@@ -9,12 +9,12 @@
     </parent>
 
     <artifactId>cucumber-slack-notifier</artifactId>
-    <version>0.10.0</version>
+    <version>${revision}${changelist}</version>
     <packaging>hpi</packaging>
     <url>https://github.com/${gitHubRepo}</url>
 
     <properties>
-        <revision>0.10.0</revision>
+        <revision>0.10.1</revision>
         <changelist>-SNAPSHOT</changelist>
         <gitHubRepo>jenkinsci/cucumber-slack-notifier-plugin</gitHubRepo>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -99,7 +99,7 @@
         <connection>scm:git:ssh://github.com/${gitHubRepo}.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/${gitHubRepo}.git</developerConnection>
         <url>https://github.com/${gitHubRepo}</url>
-        <tag>cucumber-slack-notifier-0.10.0</tag>
+        <tag>${scmTag}</tag>
     </scm>
 
     <build>
