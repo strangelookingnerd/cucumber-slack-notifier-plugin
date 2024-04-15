@@ -19,7 +19,7 @@
         <gitHubRepo>jenkinsci/cucumber-slack-notifier-plugin</gitHubRepo>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jenkins.version>2.346.3</jenkins.version>
+        <jenkins.version>2.414.3</jenkins.version>
     </properties>
 
     <developers>
@@ -41,8 +41,8 @@
         <dependencies>
             <dependency>
                 <groupId>io.jenkins.tools.bom</groupId>
-                <artifactId>bom-2.346.x</artifactId>
-                <version>1763.v092b_8980a_f5e</version>
+                <artifactId>bom-2.414.x</artifactId>
+                <version>2977.vdf61ecb_fb_e2d</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -56,8 +56,7 @@
         </dependency>
         <dependency>
             <groupId>io.jenkins.plugins</groupId>
-            <artifactId>commons-httpclient3-api</artifactId>
-            <version>3.1-3</version>
+            <artifactId>apache-httpcomponents-client-5-api</artifactId>
         </dependency>
         <!-- for workflow support -->
         <dependency>

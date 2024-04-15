@@ -3,12 +3,14 @@ package org.jenkinsci.plugins.slacknotifier;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +21,7 @@ public class SlackClient {
     private static final Logger LOG = Logger.getLogger(SlackClient.class.getName());
 
     private static final String ENCODING = "UTF-8";
-    private static final String CONTENT_TYPE = "application/json";
+    private static final ContentType CONTENT_TYPE = ContentType.APPLICATION_JSON;
 
     private final String jenkinsUrl;
     private final String channelWebhookUrl;
@@ -45,16 +47,16 @@ public class SlackClient {
 
     private void postToSlack(String json) {
         LOG.fine("Json being posted: " + json);
-        StringRequestEntity requestEntity = getStringRequestEntity(json);
-        PostMethod postMethod = new PostMethod(channelWebhookUrl);
-        postMethod.setRequestEntity(requestEntity);
+        StringEntity requestEntity = getStringRequestEntity(json);
+        HttpPost postMethod = new HttpPost(channelWebhookUrl);
+        postMethod.setEntity(requestEntity);
         postToSlack(postMethod);
     }
 
-    private void postToSlack(PostMethod postMethod) {
-        HttpClient http = new HttpClient();
-        try {
-            int status = http.executeMethod(postMethod);
+    private void postToSlack(HttpPost postMethod) {
+        try (CloseableHttpClient http = HttpClients.createDefault()) {
+            HttpResponse response = http.execute(postMethod);
+            int status = response.getCode();
             if (status != 200) {
                 throw new RuntimeException("Received HTTP Status code [" + status + "] while posting to slack");
             }
@@ -100,11 +102,7 @@ public class SlackClient {
         return new CucumberResult(results, totalScenarios, passPercent);
     }
 
-    private StringRequestEntity getStringRequestEntity(String json) {
-        try {
-            return new StringRequestEntity(json, CONTENT_TYPE, ENCODING);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(ENCODING + " encoding is not supported with [" + json + "]", e);
-        }
+    private StringEntity getStringRequestEntity(String json) {
+        return new StringEntity(json, CONTENT_TYPE, ENCODING, true);
     }
 }
